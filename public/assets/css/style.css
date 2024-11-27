@@ -1,0 +1,17 @@
+.label-name {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.custom-input {
+    font-size: 13px;
+}
+
+.custom-input::placeholder {
+    font-size: 13px;
+}
+
+.field-required {
+    color: red;
+}
