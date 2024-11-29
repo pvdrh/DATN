@@ -65,12 +65,12 @@
                                                                  alt="user1">
                                                         </div>
                                                         <div class="d-flex flex-column justify-content-center">
-                                                            <p class="text-sm font-weight-bol mb-0">{{$item->customer->name}}</p>
+                                                            <p class="text-sm font-weight-bol mb-0">{{$item->customer->name ?? ''}}</p>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <p class="text-sm font-weight-bol mb-0">{{$item->user->name}}</p>
+                                                    <p class="text-sm font-weight-bol mb-0">{{$item->user->name ?? ''}}</p>
                                                 </td>
                                                 <td class="align-middle text-left">
                                                     <span class="text-sm">{{ $item->start_date ? $item->start_date->format('H:i d/m/Y') : '-' }}</span>

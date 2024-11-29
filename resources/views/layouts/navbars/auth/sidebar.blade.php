@@ -217,7 +217,7 @@
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">CÀI ĐẶT</h6>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ (Request::is('profile') ? 'active' : '') }}" href="{{ route('profile') }}">
+                    <a class="nav-link {{ (Request::is('profile') ? 'active' : '') }}" href="#">
                         <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                             <svg width="12px" height="12px" viewBox="0 0 46 42" version="1.1"
                                  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -243,7 +243,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ (Request::is('pages*') ? 'active' : '') }}" href="#">
+                    <a class="nav-link {{ (Request::is('pages*') ? 'active' : '') }}" href="{{route('pages.index')}}">
                         <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                             <svg width="12px" height="12px" viewBox="0 0 46 42" version="1.1"
                                  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">

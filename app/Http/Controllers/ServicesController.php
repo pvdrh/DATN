@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Agency;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ServicesController extends Controller
 {
@@ -15,8 +16,12 @@ class ServicesController extends Controller
         $services = Service
             ::when($search, function ($query, $search) {
                 $query->where('name', 'LIKE', "%$search%");
-            })->with('agency')
-            ->paginate(10);
+            })->with('agency');
+        if (Auth::user()->role != 1) {
+            $services = $services->where('agency_id', Auth::user()->agency_id);
+        }
+
+        $services = $services->paginate(10);
 
         return view('services.index', compact('services', 'search'));
     }

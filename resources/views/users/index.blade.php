@@ -94,20 +94,21 @@
                                                        data-toggle="tooltip" data-original-title="Edit user">
                                                         <i class="bi bi-pencil-square"></i>
                                                     </a>
-
-                                                    <span class="mx-2">|</span>
-
-                                                    <form action="{{ route('users.destroy', ['user_id' => $user->id]) }}"
-                                                          method="POST" style="display:inline;"
-                                                          onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit"
-                                                                class="border-0 bg-transparent p-0 text-danger"
-                                                                data-toggle="tooltip" data-original-title="Delete user">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </form>
+                                                    @if (!$user->is_protected)
+                                                        <span class="mx-2">|</span>
+                                                        <form action="{{ route('users.destroy', ['user_id' => $user->id]) }}"
+                                                              method="POST" style="display:inline;"
+                                                              onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                    class="border-0 bg-transparent p-0 text-danger"
+                                                                    data-toggle="tooltip"
+                                                                    data-original-title="Delete user">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach

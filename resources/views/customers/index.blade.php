@@ -85,7 +85,7 @@
                                                     </p>
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <span class="text-sm">{{$customer->agency->name}}</span>
+                                                    <span class="text-sm">{{$customer->agency->name ?? ''}}</span>
                                                 </td>
                                                 <td class="align-middle">
                                                     <a href="{{route('customers.edit', ['customer_id' => $customer->id])}}"

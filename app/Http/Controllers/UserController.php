@@ -6,6 +6,8 @@ use App\Models\Agency;
 use App\Models\User;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Auth;
+
 use function Termwind\renderUsing;
 
 class UserController extends Controller
@@ -13,13 +15,17 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-
-        $users = User::with('agency')
+        $users = User::query();
+        $users = $users->with('agency')
             ->when($search, function ($query, $search) {
                 $query->where('name', 'LIKE', "%$search%")
                     ->orWhere('phone', 'LIKE', "%$search%");
-            })
-            ->paginate(10);
+            });
+        if (Auth::user()->role != 1) {
+            $users = $users->where('agency_id', Auth::user()->agency_id);
+        }
+
+        $users = $users->paginate(10);
 
         return view('users.index', compact('users', 'search'));
     }
@@ -48,8 +54,8 @@ class UserController extends Controller
             'password' => bcrypt(123456),
             'role' => $request->role,
             'agency_id' => $request->agency_id,
-            'address' => $request->address,
-            'dob' => $request->dob,
+            'address' => $request->address ?? '',
+            'dob' => $request->dob ?? '',
             'gender' => $request->gender
         ]);
 
@@ -79,7 +85,10 @@ class UserController extends Controller
     public function destroy($user_id)
     {
         $user = User::findOrFail($user_id);
-        $user->delete();
+
+        if (!$user->is_protected) {
+            $user->delete();
+        }
 
         return redirect()->route('users.index');
     }

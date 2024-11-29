@@ -36,12 +36,12 @@ class CustomerController extends Controller
 
         Customer::create([
             'name' => $validatedData['name'],
-            'phone' => $validatedData['phone'],
-            'address' => $validatedData['address'],
-            'email' => $validatedData['email'],
+            'phone' => $validatedData['phone'] ?? '',
+            'address' => $validatedData['address'] ?? '',
+            'email' => $validatedData['email'] ?? '',
             'agency_id' => $validatedData['agency_id'],
             'gender' => $validatedData['gender'],
-            'dob' => $validatedData['dob'],
+            'dob' => $validatedData['dob'] ?? '',
             'medical_information' => json_encode($validatedData['medical_information'])
         ]);
 

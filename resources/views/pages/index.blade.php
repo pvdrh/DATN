@@ -1,16 +1,15 @@
 @extends('layouts.user_type.auth')
-
-@section('title', 'Danh sách dich vụ khách hàng')
+@section('title', 'Danh sách trang')
 
 @section('content')
     <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
         <div class="container-fluid py-4">
             <div class="row mb-4">
                 <div class="col-6">
-                    <h4>Danh sách dịch vụ khách hàng</h4>
+                    <h4>Danh sách trang</h4>
                 </div>
                 <div class="col-6 text-end">
-                    <a href="{{route('customer_services.create')}}" class="btn bg-gradient-success"><i
+                    <a href="{{route('pages.create')}}" class="btn bg-gradient-success"><i
                                 class="bi bi-plus-circle me-2"></i> Thêm mới</a>
                 </div>
             </div>
@@ -18,18 +17,6 @@
                 <div class="col-12">
                     <div class="card mb-4">
                         <div class="card-header">
-                            <form action="#" method="GET" class="d-inline">
-                                <div class="input-group w-30">
-                                    <input type="text"
-                                           name="search"
-                                           class="form-control custom-input"
-                                           placeholder="Nhập tên dịch vụ hoặc khách hàng"
-                                           value="{{ old('search', request('search')) }}">
-                                    <span class="input-group-text">
-            <i class="bi bi-search"></i>
-        </span>
-                                </div>
-                            </form>
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">
@@ -37,46 +24,66 @@
                                     <thead>
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Tên khách hàng
+                                            Slug
                                         </th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                            Tên dịch vụ
+                                            Ngày tạo
                                         </th>
                                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Người tạo
+                                            Trạng thái
                                         </th>
-                                        {{--                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">--}}
-                                        {{--                                            Chi nhánh--}}
-                                        {{--                                        </th>--}}
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                            Thời gian đăng ký
-                                        </th>
+                                        <th class="text-secondary opacity-7"></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @if(count($items) > 0)
-                                        @foreach($items as $item)
+                                    @if(count($pages) > 0)
+                                        @foreach($pages as $page)
                                             <tr>
                                                 <td>
                                                     <div class="d-flex px-2 py-1">
                                                         <div>
-                                                            <img src="https://cdn0.iconfinder.com/data/icons/hotel-service-7/64/gym-fitness-workout-center-512.png"
+                                                            <img style="object-fit: cover"
+                                                                 src="https://static.vecteezy.com/system/resources/thumbnails/003/731/316/small_2x/web-icon-line-on-white-background-image-for-web-presentation-logo-icon-symbol-free-vector.jpg"
                                                                  class="avatar avatar-sm me-3"
-                                                                 alt="user1">
+                                                                 alt="avatar">
                                                         </div>
                                                         <div class="d-flex flex-column justify-content-center">
-                                                            <p class="text-sm font-weight-bol mb-0">{{$item->customer->name ?? ''}}</p>
+                                                            <a href="{{route('pages.edit', ['page_id' => $page->id])}}"
+                                                               class="mb-0 text-sm label-name">{{$page->slug}}</a>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <p class="text-sm font-weight-bol mb-0">{{$item->service->name ?? ''}}</p>
+                                                <td class="align-middle text-left">
+                                                    <span class="text-sm">{{$page->created_at->format('d/m/Y')}}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <span class="text-sm">{{$item->user->name ?? ''}}</span>
+                                                    @if ($page->status)
+                                                        <p class="text-sm font-weight-bol"> Đang
+                                                            kích hoạt</p>
+                                                    @else
+                                                        <p class="text-sm font-weight-bol"> Không kích hoạt</p>
+                                                    @endif
                                                 </td>
-                                                <td class="align-middle text-left">
-                                                    <p class="text-sm font-weight-bol mb-0">{{$item->created_at ? $item->created_at->format('d/m/Y') : '' }}</p>
+                                                <td class="align-middle">
+                                                    <a href="{{route('pages.edit', ['page_id' => $page->id])}}"
+                                                       class="text-warning font-weight-bold text-xs"
+                                                       data-toggle="tooltip" data-original-title="Edit user">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </a>
+
+                                                    <span class="mx-2">|</span>
+
+                                                    <form action="{{ route('pages.destroy', ['page_id' => $page->id]) }}"
+                                                          method="POST" style="display:inline;"
+                                                          onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                                class="border-0 bg-transparent p-0 text-danger"
+                                                                data-toggle="tooltip" data-original-title="Delete user">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -91,7 +98,7 @@
                                     </tbody>
                                 </table>
                                 <div class="d-flex justify-content-end mt-3" style="margin-right: 16px;">
-                                    {{ $items->links('pagination::bootstrap-4') }}
+                                    {{ $pages->links('pagination::bootstrap-4') }}
                                 </div>
                             </div>
                         </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Agency;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AgencyController extends Controller
 {
@@ -15,9 +16,13 @@ class AgencyController extends Controller
             ->when($search, function ($query) use ($search) {
                 $query->where('name', 'LIKE', "%{$search}%")
                     ->orWhere('phone', 'LIKE', "%{$search}%");
-            })
-            ->paginate(10);
+            });
 
+        if (Auth::user()->role != 1) {
+            $agencies = $agencies->where('agency_id', Auth::user()->agency_id);
+        }
+
+        $agencies = $agencies->paginate(10);
         return view('agencies.index', compact('agencies'));
     }
 
@@ -39,8 +44,8 @@ class AgencyController extends Controller
         $agency = new Agency();
         $agency->name = $validated['name'];
         $agency->phone = $validated['phone'] ?? null;
-        $agency->address = $validated['address'] ?? null;
-        $agency->email = $validated['email'] ?? null;
+        $agency->address = $validated['address'] ?? '';
+        $agency->email = $validated['email'] ?? '';
         $agency->save();
 
         return redirect()->route('agencies.index');
