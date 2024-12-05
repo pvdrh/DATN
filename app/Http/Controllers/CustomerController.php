@@ -45,7 +45,7 @@ class CustomerController extends Controller
             'medical_information' => json_encode($validatedData['medical_information'])
         ]);
 
-        return redirect()->route('customers.index')->with('success', 'Khách hàng đã được thêm thành công!');
+        return redirect()->route('customers.index');
     }
 
     public function edit($id)
