@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\CustomerService;
 use App\Models\Service;
+use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CustomerServicesController extends Controller
@@ -24,6 +26,7 @@ class CustomerServicesController extends Controller
                     $query->where('name', 'LIKE', '%' . $search . '%');
                 }
             })
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
 
         return view('customers.services.index', compact('items', 'search'));
@@ -31,8 +34,14 @@ class CustomerServicesController extends Controller
 
     public function create()
     {
-        $services = Service::where('status', 1)->get();
-        $customers = Customer::all();
+        $agency_id = auth()->user()->agency_id;
+        if (empty($agency_id)) {
+            $services = Service::where('status', 1)->get();
+            $customers = Customer::all();
+        } else {
+            $services = Service::where(['status' => 1, 'agency_id' => $agency_id])->get();
+            $customers = Customer::where('agency_id', $agency_id)->get();
+        }
 
         return view('customers.services.create', compact('services', 'customers'));
     }
@@ -43,11 +52,21 @@ class CustomerServicesController extends Controller
             'customer_id' => 'required|exists:customers,id',
             'service_id' => 'required|exists:services,id',
         ]);
-
+        $amount = $request->amount;
+        $amount = (int)str_replace('.', '', $amount);
         CustomerService::create([
             'customer_id' => $request->customer_id,
             'service_id' => $request->service_id,
             'user_id' => auth()->id(),
+        ]);
+
+        Transaction::create([
+            'customer_id' => $request->customer_id,
+            'service_id' => $request->service_id,
+            'user_id' => auth()->id(),
+            'agency_id' => auth()->user()->agency_id,
+            'amount' => $amount,
+            'created_at' => now(),
         ]);
 
         return redirect()->route('customer_services.index');

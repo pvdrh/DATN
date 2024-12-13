@@ -31,6 +31,13 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="amount" class="form-label">Thành tiền</label>
+                            <input type="text" name="amount" id="amount"
+                                   value="{{ number_format($service->price, 0, ',', '.') }}"
+                                   class="form-control"
+                                   placeholder="Thành tiền">
+                        </div>
 
                     </div>
 
@@ -42,4 +49,22 @@
             </div>
         </div>
     </div>
+    <script>
+        const amountInput = document.getElementById('amount');
+
+        amountInput.addEventListener('input', function (e) {
+            let value = e.target.value.replace(/[^0-9]/g, '');
+
+            value = new Intl.NumberFormat('vi-VN').format(value);
+
+            e.target.value = value;
+        });
+
+        amountInput.addEventListener('blur', function (e) {
+            let value = e.target.value.replace(/[^0-9]/g, '');
+            if (value) {
+                e.target.value = new Intl.NumberFormat('vi-VN').format(value);
+            }
+        });
+    </script>
 @endsection

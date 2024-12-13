@@ -5,18 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CustomerSchedule extends Model
+class Transaction extends Model
 {
     use HasFactory;
 
-    protected $table = 'customer_schedules';
+    protected $table = 'transactions';
     protected $fillable = [
         'customer_id',
-        'start_date',
-        'end_date',
-        'note',
+        'service_id',
         'user_id',
-        'agency_id'
+        'amount',
     ];
 
     public function customer()
@@ -24,8 +22,18 @@ class CustomerSchedule extends Model
         return $this->belongsTo(Customer::class, 'customer_id');
     }
 
+    public function service()
+    {
+        return $this->belongsTo(Service::class, 'service_id');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class, 'agency_id');
     }
 }

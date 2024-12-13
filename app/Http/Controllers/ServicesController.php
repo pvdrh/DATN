@@ -29,8 +29,14 @@ class ServicesController extends Controller
 
     public function create()
     {
-        $services = Service::all();
-        $agencies = Agency::all();
+        $agency_id = auth()->user()->agency_id;
+        if (empty($agency_id)) {
+            $services = Service::all();
+            $agencies = Agency::all();
+        } else {
+            $services = Service::where('agency_id', $agency_id)->get();
+            $agencies = Agency::where('id', $agency_id)->get();
+        }
 
         return view('services.create')->with(['services' => $services, 'agencies' => $agencies]);
     }

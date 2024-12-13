@@ -10,14 +10,27 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = Customer::with('agency')->paginate(10);
-        $agencies = Agency::all();
+        $agency_id = auth()->user()->agency_id;
+        if (empty($agency_id)) {
+            $customers = Customer::with('agency')->paginate(10);
+            $agencies = Agency::all();
+        } else {
+            $agencies = Agency::where('id', $agency_id)->get();
+            $customers = Customer::with('agency')->where('agency_id', $agency_id)->paginate(10);
+        }
+
         return view('customers.index', compact('customers', 'agencies'));
     }
 
     public function create()
     {
-        $agencies = Agency::all();
+        $agency_id = auth()->user()->agency_id;
+        if (empty($agency_id)) {
+            $agencies = Agency::all();
+        } else {
+            $agencies = Agency::where('id', $agency_id)->get();
+        }
+
         return view('customers.create', compact('agencies'));
     }
 
