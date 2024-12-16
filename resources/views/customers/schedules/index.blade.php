@@ -9,10 +9,12 @@
                 <div class="col-6">
                     <h4>Danh sách lịch tập luyện</h4>
                 </div>
-                <div class="col-6 text-end">
-                    <a href="{{route('customer_schedules.create')}}" class="btn bg-gradient-success"><i
-                                class="bi bi-plus-circle me-2"></i> Thêm mới</a>
-                </div>
+                @if(!auth()->user()->is_protected)
+                    <div class="col-6 text-end">
+                        <a href="{{route('customer_schedules.create')}}" class="btn bg-gradient-success"><i
+                                    class="bi bi-plus-circle me-2"></i> Thêm mới</a>
+                    </div>
+                @endif
             </div>
             <div class="row">
                 <div class="col-12">
