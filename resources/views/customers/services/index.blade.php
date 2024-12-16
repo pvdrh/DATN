@@ -45,11 +45,11 @@
                                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Người tạo
                                         </th>
-                                        {{--                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">--}}
-                                        {{--                                            Chi nhánh--}}
-                                        {{--                                        </th>--}}
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                             Thời gian đăng ký
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            Thời gian kết thúc
                                         </th>
                                     </tr>
                                     </thead>
@@ -77,6 +77,11 @@
                                                 </td>
                                                 <td class="align-middle text-left">
                                                     <p class="text-sm font-weight-bol mb-0">{{$item->created_at ? $item->created_at->format('d/m/Y') : '' }}</p>
+                                                </td>
+                                                <td class="align-middle text-left">
+                                                    <p class="text-sm font-weight-bold mb-0">
+                                                        {{ $item->end_time ? \Carbon\Carbon::parse($item->end_time)->format('d/m/Y') : '' }}
+                                                    </p>
                                                 </td>
                                             </tr>
                                         @endforeach

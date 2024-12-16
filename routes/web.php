@@ -28,41 +28,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/', [HomeController::class, 'home']);
     Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 
-    Route::get('billing', function () {
-        return view('billing');
-    })->name('billing');
-
-    Route::get('profile', function () {
-        return view('profile');
-    })->name('profile');
-
-    Route::get('rtl', function () {
-        return view('rtl');
-    })->name('rtl');
-
-    Route::get('user-management', function () {
-        return view('laravel-examples/user-management');
-    })->name('user-management');
-
-    Route::get('tables', function () {
-        return view('tables');
-    })->name('tables');
-
-    Route::get('virtual-reality', function () {
-        return view('virtual-reality');
-    })->name('virtual-reality');
-
-    Route::get('static-sign-in', function () {
-        return view('static-sign-in');
-    })->name('sign-in');
-
-    Route::get('static-sign-up', function () {
-        return view('static-sign-up');
-    })->name('sign-up');
-
     Route::get('/logout', [SessionsController::class, 'destroy']);
-    Route::get('/user-profile', [InfoUserController::class, 'create']);
-    Route::post('/user-profile', [InfoUserController::class, 'store']);
     Route::get('/login', function () {
         return view('dashboard');
     })->name('sign-up');
@@ -121,6 +87,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/store', [CustomerSchedulesController::class, 'store'])->name('customer_schedules.store');
         Route::get('/{customer_id}', [CustomerSchedulesController::class, 'edit'])->name('customer_schedules.edit');
         Route::put('/{customer_id}', [CustomerSchedulesController::class, 'update'])->name('customer_schedules.update');
+        Route::delete('/{id}', [CustomerSchedulesController::class, 'destroy'])->name(
+            'customer_schedules.destroy'
+        );
     });
 
     Route::prefix('pages')->middleware('admin')->group(function () {

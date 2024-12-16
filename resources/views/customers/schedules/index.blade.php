@@ -51,6 +51,7 @@
                                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Ghi chú
                                         </th>
+                                        <th class="text-secondary opacity-7"></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -73,13 +74,26 @@
                                                     <p class="text-sm font-weight-bol mb-0">{{$item->user->name ?? ''}}</p>
                                                 </td>
                                                 <td class="align-middle text-left">
-                                                    <span class="text-sm">{{ $item->start_date ? $item->start_date->format('H:i d/m/Y') : '-' }}</span>
+                                                    <span class="text-sm">{{ $item->start_time ? $item->start_time->format('H:i d/m/Y') : '-' }}</span>
                                                 </td>
                                                 <td class="align-middle text-left">
-                                                    <span class="text-sm">{{ $item->end_date ? $item->end_date->format('H:i d/m/Y') : '-' }}</span>
+                                                    <span class="text-sm">{{ $item->end_time ? $item->end_time->format('H:i d/m/Y') : '-' }}</span>
                                                 </td>
                                                 <td>
                                                     <p class="text-sm font-weight-bol mb-0">{{$item->note}}</p>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <form action="{{ route('customer_schedules.destroy', ['id' => $item->id]) }}"
+                                                          method="POST" style="display:inline;"
+                                                          onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                                class="border-0 bg-transparent p-0 text-danger"
+                                                                data-toggle="tooltip" data-original-title="Delete user">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                         @endforeach

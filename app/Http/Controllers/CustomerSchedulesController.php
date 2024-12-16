@@ -28,7 +28,7 @@ class CustomerSchedulesController extends Controller
     public function create()
     {
         $customers = Customer::all();
-        $users = User::where('is_protected', 0)->get();
+        $users = User::where('role', 3)->get();
         return view('customers.schedules.create', compact('customers', 'users'));
     }
 
@@ -43,8 +43,19 @@ class CustomerSchedulesController extends Controller
         CustomerSchedule::create([
             'customer_id' => $request->customer_id,
             'user_id' => $request->user_id,
-            'start_date' => $request->start_date,
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
+            'agency_id' => auth()->user()->agency_id,
         ]);
+
+        return redirect()->route('customer_schedules.index');
+    }
+
+    public function destroy($id)
+    {
+        $customer_schedule = CustomerSchedule::findOrFail($id);
+
+        $customer_schedule->delete();
 
         return redirect()->route('customer_schedules.index');
     }

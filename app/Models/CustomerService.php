@@ -13,7 +13,8 @@ class CustomerService extends Model
     protected $fillable = [
         'customer_id',
         'service_id',
-        'user_id'
+        'user_id',
+        'end_time'
     ];
 
     public function customer()

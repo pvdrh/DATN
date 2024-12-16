@@ -38,7 +38,13 @@
                                    class="form-control"
                                    placeholder="Thành tiền">
                         </div>
-
+                        <div class="col-md-6 mb-3">
+                            <label for="end_time" class="form-label">Ngày kết thúc</label>
+                            <input type="date" name="end_time" id="end_time"
+                                   value="{{ isset($service->end_date) ? $service->end_date->format('Y-m-d') : '' }}"
+                                   class="form-control"
+                                   placeholder="Ngày kết thúc">
+                        </div>
                     </div>
 
                     <div class="d-flex justify-content-end">

@@ -32,11 +32,16 @@
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="start_date" class="form-label">Thời gian bắt đầu</label>
-                            <input type="datetime-local" name="start_date" id="start_date"
+                            <label for="start_time" class="form-label">Thời gian bắt đầu</label>
+                            <input type="datetime-local" name="start_time" id="start_time"
                                    class="form-control"
-                                   value="{{ old('start_date', isset($startDate) ? $startDate->format('Y-m-d\TH:i') : '') }}">
-
+                                   value="{{ old('start_time') }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="end_time" class="form-label">Thời gian kết thúc</label>
+                            <input type="datetime-local" name="end_time" id="end_time"
+                                   class="form-control"
+                                   value="{{ old('end_time') }}">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="note" class="form-label">Ghi chú</label>

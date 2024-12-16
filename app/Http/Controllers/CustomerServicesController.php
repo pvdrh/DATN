@@ -51,6 +51,7 @@ class CustomerServicesController extends Controller
         $request->validate([
             'customer_id' => 'required|exists:customers,id',
             'service_id' => 'required|exists:services,id',
+            'end_time' => 'required',
         ]);
         $amount = $request->amount;
         $amount = (int)str_replace('.', '', $amount);
@@ -58,6 +59,7 @@ class CustomerServicesController extends Controller
             'customer_id' => $request->customer_id,
             'service_id' => $request->service_id,
             'user_id' => auth()->id(),
+            'end_time' => $request->end_time
         ]);
 
         Transaction::create([
