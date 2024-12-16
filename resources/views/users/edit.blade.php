@@ -26,7 +26,7 @@
                         <div class="col-md-6 mb-3">
                             <label for="phone" class="form-label">Số điện thoại <span
                                         class="field-required"> *</span></label>
-                            <input type="text" name="phone" value="{{ old('phone', $user->phone) }}" id="phone"
+                            <input style="pointer-events: none" type="text" name="phone" value="{{ old('phone', $user->phone) }}" id="phone"
                                    class="form-control @error('phone') is-invalid @enderror"
                                    placeholder="Nhập số điện thoại" required>
                             @error('phone')

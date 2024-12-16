@@ -109,6 +109,17 @@
                                                             </button>
                                                         </form>
                                                     @endif
+
+                                                    @if(auth()->user()->role == 1)
+                                                        <span class="mx-2">|</span>
+                                                        <a href="#"
+                                                           class="text-dark font-weight-bold text-sm change-password-user-btn"
+                                                           data-user-id="{{ $user->id }}"
+                                                           data-toggle="tooltip"
+                                                           data-original-title="Đặt lại mật khẩu">
+                                                            <i class="bi bi-key"></i>
+                                                        </a>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -132,4 +143,93 @@
             </div>
         </div>
     </main>
+    <!-- Modal Đổi Mật Khẩu -->
+    <div class="modal fade" id="changePasswordUserModal" tabindex="-1" aria-labelledby="changePasswordModalUserLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changePasswordModalUserLabel">Đổi mật khẩu người dùng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- Body -->
+                <div class="modal-body">
+                    <form id="changePasswordUserForm">
+                        <input type="hidden" id="userId">
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">Mật khẩu mới</label>
+                            <input type="password" class="form-control" id="newPasswordUser"
+                                   placeholder="Nhập mật khẩu mới">
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Xác nhận mật khẩu mới</label>
+                            <input type="password" class="form-control" id="confirmPasswordUser"
+                                   placeholder="Nhập lại mật khẩu mới">
+                        </div>
+                    </form>
+                </div>
+                <!-- Footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="resetPassword">Lưu thay đổi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const changePasswordUserModal = document.getElementById("changePasswordUserModal");
+
+            changePasswordUserModal.addEventListener("hidden.bs.modal", function () {
+                document.getElementById("changePasswordUserForm").reset();
+                document.getElementById("userId").value = "";
+            });
+            document.querySelectorAll(".change-password-user-btn").forEach(button => {
+                button.addEventListener("click", function() {
+                    const userId = this.getAttribute("data-user-id");
+                    document.getElementById("userId").value = userId;
+                    const modal = new bootstrap.Modal(document.getElementById("changePasswordUserModal"));
+                    modal.show();
+                });
+            });
+
+            document.getElementById("resetPassword").addEventListener("click", function() {
+                const userId = document.getElementById("userId").value;
+                const newPassword = document.getElementById("newPasswordUser").value;
+                const confirmPassword = document.getElementById("confirmPasswordUser").value;
+
+                if (newPassword !== confirmPassword) {
+                    alert("Mật khẩu xác nhận không khớp!");
+                    return;
+                }
+
+                fetch("{{ route('change.changePassword') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({
+                        user_id: userId,
+                        new_password: newPassword,
+                        new_password_confirmation: confirmPassword
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            alert("Có lỗi xảy ra: " + (data.message || "Không xác định"));
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        alert("Đã xảy ra lỗi kết nối. Vui lòng thử lại!");
+                    });
+            });
+        });
+    </script>
+
 @endsection

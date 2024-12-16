@@ -148,4 +148,9 @@ Route::get('/login', function () {
     return view('session/login-session');
 })->name('login');
 
+Route::post('/change-password', [SessionsController::class, 'changePassword'])->name('change.password');
+Route::post('/change-password-user', [SessionsController::class, 'changePasswordForUser'])->name(
+    'change.changePassword'
+);
+
 Route::get('/{slug}', [HomeController::class, 'getPageBySlug']);
