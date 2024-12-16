@@ -57,9 +57,9 @@ class AgencyController extends Controller
         return view('agencies.edit')->with('agency', $agency);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $agency_id)
     {
-        $agency = Agency::find($id);
+        $agency = Agency::find($agency_id);
 
         $data = $request->all();
         $agency->update($data);

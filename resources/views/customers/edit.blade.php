@@ -5,7 +5,7 @@
     <div class="container mt-4">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0">Thêm mới khách hàng</h5>
+                <h5 class="mb-0">Cập nhật thông tin khách hàng</h5>
             </div>
             <div class="card-body">
                 <form action="{{ route('customers.store') }}" method="POST">

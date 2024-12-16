@@ -9,6 +9,9 @@
                     <h4>Danh sách khách hàng</h4>
                 </div>
                 <div class="col-6 text-end">
+                    <a href="{{route('customers.export')}}" class="btn btn-success me-2">
+                        <i class="bi bi-file-earmark-excel me-2"></i> Xuất Excel
+                    </a>
                     <a href="{{route('customers.create')}}" class="btn bg-gradient-success"><i
                                 class="bi bi-plus-circle me-2"></i> Thêm mới</a>
                 </div>

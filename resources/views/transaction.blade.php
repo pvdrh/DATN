@@ -14,17 +14,35 @@
                     <div class="card mb-4">
                         <div class="card-header">
                             <form method="GET" class="d-inline">
-                                <div class="input-group w-30">
-                                    <select name="agency_id" class="form-control custom-input">
-                                        <option value="">Chọn chi nhánh</option>
-                                        @foreach ($agencies as $agency)
-                                            <option value="{{ $agency->id }}"
-                                                    {{ request('agency_id') == $agency->id ? 'selected' : '' }}>
-                                                {{ $agency->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <button type="submit" class="input-group-text">
+                                <div class="input-group align-items-center" style="gap: 20px">
+                                    <!-- Agency Filter -->
+                                    @if (empty(auth()->user()->agency_id))
+                                        <div>
+                                            <select name="agency_id" class="form-control"
+                                                    style="">
+                                                <option value="">Chọn chi nhánh</option>
+                                                @foreach ($agencies as $agency)
+                                                    <option value="{{ $agency->id }}" {{ request('agency_id') == $agency->id ? 'selected' : '' }}>
+                                                        {{ $agency->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @endif
+                                    <div>
+                                        <input type="date" name="start_date" class="form-control"
+                                               style="" placeholder="Từ ngày"
+                                               value="{{ request('start_date') }}">
+                                    </div>
+                                    <!-- Date Range Start -->
+                                    <!-- Date Range End -->
+                                    <div>
+                                        <input type="date" name="end_date" class="form-control"
+                                               style="" placeholder="Đến ngày"
+                                               value="{{ request('end_date') }}">
+                                    </div>
+                                    <!-- Search Button -->
+                                    <button type="submit" class="btn" style="margin-bottom: 0; border-radius: 8px">
                                         <i class="bi bi-search"></i>
                                     </button>
                                 </div>
@@ -49,6 +67,9 @@
                                         </th>
                                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Người tạo
+                                        </th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Ngày tạo
                                         </th>
                                     </tr>
                                     </thead>
@@ -75,6 +96,9 @@
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <p class="text-sm font-weight-bol mb-0">{{$transaction->user->name}}</p>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <p class="text-sm font-weight-bol mb-0">{{ \Carbon\Carbon::parse($transaction->created_at)->format('d-m-Y') }}</p>
                                                 </td>
                                             </tr>
                                         @endforeach

@@ -96,6 +96,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::prefix('customers')->group(function () {
         Route::get('/', [CustomerController::class, 'index'])->name('customers.index');
+        Route::get('/export', [CustomerController::class, 'export'])->name('customers.export');
         Route::get('/create', [CustomerController::class, 'create'])->name('customers.create');
         Route::post('/store', [CustomerController::class, 'store'])->name('customers.store');
         Route::get('/{customer_id}', [CustomerController::class, 'edit'])->name('customers.edit');

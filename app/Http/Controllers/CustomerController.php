@@ -2,25 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\CustomersExport;
 use App\Models\Agency;
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CustomerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $agency_id = auth()->user()->agency_id;
-        if (empty($agency_id)) {
-            $customers = Customer::with('agency')->paginate(10);
-            $agencies = Agency::all();
-        } else {
+        $search = $request->input('search');
+
+        $customers = Customer::with('agency');
+
+        if (!empty($agency_id)) {
+            $customers = $customers->where('agency_id', $agency_id);
             $agencies = Agency::where('id', $agency_id)->get();
-            $customers = Customer::with('agency')->where('agency_id', $agency_id)->paginate(10);
+        } else {
+            $agencies = Agency::all();
         }
 
-        return view('customers.index', compact('customers', 'agencies'));
+        if ($search) {
+            $customers = $customers->where(function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%$search%")
+                    ->orWhere('phone', 'LIKE', "%$search%");
+            });
+        }
+
+        $customers = $customers->paginate(10)->appends(['search' => $search]);
+
+        return view('customers.index', compact('customers', 'agencies', 'search'));
     }
+
 
     public function create()
     {
@@ -67,5 +82,10 @@ class CustomerController extends Controller
         $agencies = Agency::all();
 
         return view('customers.edit', compact('customer', 'agencies'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new CustomersExport, 'customers.xlsx');
     }
 }
