@@ -26,8 +26,11 @@ class CustomerServicesController extends Controller
                     $query->where('name', 'LIKE', '%' . $search . '%');
                 }
             })
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->orderBy('created_at', 'desc');
+        if (!auth()->user()->is_protected) {
+            $items = $items->where('agency_id', auth()->user()->agency_id);
+        }
+        $items->paginate(10);
 
         return view('customers.services.index', compact('items', 'search'));
     }
@@ -59,7 +62,8 @@ class CustomerServicesController extends Controller
             'customer_id' => $request->customer_id,
             'service_id' => $request->service_id,
             'user_id' => auth()->id(),
-            'end_time' => $request->end_time
+            'end_time' => $request->end_time,
+            'agency_id' => auth()->user()->agency_id,
         ]);
 
         Transaction::create([

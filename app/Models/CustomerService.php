@@ -14,7 +14,8 @@ class CustomerService extends Model
         'customer_id',
         'service_id',
         'user_id',
-        'end_time'
+        'end_time',
+        'agency_id'
     ];
 
     public function customer()

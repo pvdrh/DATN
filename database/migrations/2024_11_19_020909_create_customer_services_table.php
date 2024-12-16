@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('service_id');
             $table->integer('user_id');
             $table->dateTime('end_time')->nullable();
+            $table->integer('agency_id');
             $table->timestamps();
         });
     }
