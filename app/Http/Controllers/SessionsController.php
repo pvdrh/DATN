@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use App\Exports\TransactionsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SessionsController extends Controller
 {
@@ -124,5 +126,19 @@ class SessionsController extends Controller
             'success' => true,
             'message' => 'Mật khẩu đã được cập nhật thành công.',
         ]);
+    }
+
+
+    public function transaction_export(Request $request)
+    {
+        // Lấy bộ lọc từ request
+        $filters = [
+            'agency_id'  => $request->input('agency_id'),
+            'start_date' => $request->input('start_date'),
+            'end_date'   => $request->input('end_date'),
+        ];
+
+        // Xuất file Excel với bộ lọc hiện tại
+        return Excel::download(new TransactionsExport($filters), 'transactions.xlsx');
     }
 }

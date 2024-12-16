@@ -135,6 +135,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::get('/transactions', [SessionsController::class, 'transaction'])->name('transactions.index');
+    Route::get('/transactions-export', [SessionsController::class, 'transaction_export'])->name('transactions.export');
 
     Route::get('/profile', [SessionsController::class, 'profile'])->name('profile');
 });

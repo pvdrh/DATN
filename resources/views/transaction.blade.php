@@ -8,6 +8,11 @@
                 <div class="col-6">
                     <h4>Lịch sử giao dịch</h4>
                 </div>
+                <div class="col-6 text-end">
+                    <a href="{{route('transactions.export')}}" class="btn btn-success me-2">
+                        <i class="bi bi-file-earmark-excel me-2"></i> Xuất Excel
+                    </a>
+                </div>
             </div>
             <div class="row">
                 <div class="col-12">
