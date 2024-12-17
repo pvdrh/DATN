@@ -76,10 +76,12 @@
                                                     <p class="text-sm font-weight-bol mb-0">{{$item->user->name ?? ''}}</p>
                                                 </td>
                                                 <td class="align-middle text-left">
-                                                    <span class="text-sm">{{ $item->start_time ? $item->start_time->format('H:i d/m/Y') : '-' }}</span>
+                                                    <span class="text-sm">{{ $item->start_time ? \Carbon\Carbon::parse($item->start_time)->format('H:i d/m/Y') : '-' }}</span>
                                                 </td>
                                                 <td class="align-middle text-left">
-                                                    <span class="text-sm">{{ $item->end_time ? $item->end_time->format('H:i d/m/Y') : '-' }}</span>
+                                                    <span class="text-sm">
+                                                        {{ $item->end_time ? \Carbon\Carbon::parse($item->end_time)->format('H:i d/m/Y') : '-' }}
+                                                    </span>
                                                 </td>
                                                 <td>
                                                     <p class="text-sm font-weight-bol mb-0">{{$item->note}}</p>

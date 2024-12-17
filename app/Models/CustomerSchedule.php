@@ -12,8 +12,8 @@ class CustomerSchedule extends Model
     protected $table = 'customer_schedules';
     protected $fillable = [
         'customer_id',
-        'start_date',
-        'end_date',
+        'start_time',
+        'end_time',
         'note',
         'user_id',
         'agency_id'

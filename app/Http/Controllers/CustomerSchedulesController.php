@@ -37,7 +37,6 @@ class CustomerSchedulesController extends Controller
         $request->validate([
             'customer_id' => 'required|exists:customers,id',
             'user_id' => 'required|exists:users,id',
-            'start_date' => 'nullable',
         ]);
 
         CustomerSchedule::create([
