@@ -15,7 +15,17 @@ class CustomerServicesController extends Controller
     {
         $search = $request->input('search');
 
-        $items = CustomerService::with(['customer', 'service', 'user'])
+        $items = CustomerService::with([
+            'customer' => function ($query) {
+                $query->withTrashed();
+            },
+            'service' => function ($query) {
+                $query->withTrashed();
+            },
+            'user' => function ($query) {
+                $query->withTrashed();
+            }
+        ])
             ->whereHas('customer', function ($query) use ($search) {
                 if ($search) {
                     $query->where('name', 'LIKE', '%' . $search . '%');
