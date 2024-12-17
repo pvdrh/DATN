@@ -77,7 +77,7 @@ class ServicesController extends Controller
 
         $service->update($request->all());
 
-        return redirect()->route('services.index')->with('success', 'Cập nhật thông tin người dùng thành công.');
+        return redirect()->route('services.index');
     }
 
     public function destroy($service_id)
@@ -85,6 +85,6 @@ class ServicesController extends Controller
         $service = Service::findOrFail($service_id);
         $service->delete();
 
-        return redirect()->route('services.index')->with('success', 'Xóa dịch vụ thành công.');
+        return redirect()->route('services.index');
     }
 }

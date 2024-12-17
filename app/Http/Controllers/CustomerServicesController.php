@@ -30,7 +30,7 @@ class CustomerServicesController extends Controller
         if (!auth()->user()->is_protected) {
             $items = $items->where('agency_id', auth()->user()->agency_id);
         }
-        $items->paginate(10);
+        $items = $items->paginate(10);
 
         return view('customers.services.index', compact('items', 'search'));
     }

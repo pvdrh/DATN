@@ -88,4 +88,13 @@ class CustomerController extends Controller
     {
         return Excel::download(new CustomersExport, 'customers.xlsx');
     }
+
+    public function destroy($customer_id)
+    {
+        $customer= Customer::findOrFail($customer_id);
+
+        $customer->delete();
+
+        return redirect()->route('customers.index');
+    }
 }
