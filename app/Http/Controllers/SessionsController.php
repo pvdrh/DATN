@@ -52,27 +52,16 @@ class SessionsController extends Controller
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
 
-        // Base query with relationships
         $transactions = Transaction::with([
-            'customer' => function ($query) {
-                $query->withTrashed();
-            },
-            'service' => function ($query) {
-                $query->withTrashed();
-            },
-            'user' => function ($query) {
-                $query->withTrashed();
-            },
-            'agency' => function ($query) {
-                $query->withTrashed();
-            }
+            'customer' => fn($query) => $query->withTrashed(),
+            'service' => fn($query) => $query->withTrashed(),
+            'user' => fn($query) => $query->withTrashed(),
+            'agency' => fn($query) => $query->withTrashed(),
         ]);
-        // Filter by agency
         if ($agencyId) {
             $transactions->where('agency_id', $agencyId);
         }
 
-        // Filter by date range
         if ($startDate) {
             $transactions->whereDate('created_at', '>=', $startDate);
         }
@@ -80,10 +69,8 @@ class SessionsController extends Controller
             $transactions->whereDate('created_at', '<=', $endDate);
         }
 
-        // Paginate results
         $transactions = $transactions->paginate(10);
 
-        // Fetch all agencies for dropdown
         $agencies = Agency::all();
 
         return view('transaction', compact('transactions', 'agencies'));
@@ -145,9 +132,9 @@ class SessionsController extends Controller
     {
         // Lấy bộ lọc từ request
         $filters = [
-            'agency_id'  => $request->input('agency_id'),
+            'agency_id' => $request->input('agency_id'),
             'start_date' => $request->input('start_date'),
-            'end_date'   => $request->input('end_date'),
+            'end_date' => $request->input('end_date'),
         ];
 
         // Xuất file Excel với bộ lọc hiện tại
