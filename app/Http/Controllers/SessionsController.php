@@ -53,8 +53,20 @@ class SessionsController extends Controller
         $endDate = $request->input('end_date');
 
         // Base query with relationships
-        $transactions = Transaction::with(['customer', 'service', 'user', 'agency']);
-
+        $transactions = Transaction::with([
+            'customer' => function ($query) {
+                $query->withTrashed();
+            },
+            'service' => function ($query) {
+                $query->withTrashed();
+            },
+            'user' => function ($query) {
+                $query->withTrashed();
+            },
+            'agency' => function ($query) {
+                $query->withTrashed();
+            }
+        ]);
         // Filter by agency
         if ($agencyId) {
             $transactions->where('agency_id', $agencyId);

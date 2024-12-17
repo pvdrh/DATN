@@ -14,12 +14,18 @@ class CustomerSchedulesController extends Controller
     {
         $search = $request->input('search');
 
-        $items = CustomerSchedule::with(['customer', 'user'])
-            ->whereHas('customer', function ($query) use ($search) {
-                if ($search) {
-                    $query->where('name', 'LIKE', '%' . $search . '%');
-                }
-            })
+        $items = CustomerSchedule::with([
+            'customer' => function ($query) {
+                $query->withTrashed();
+            },
+            'user' => function ($query) {
+                $query->withTrashed();
+            }
+        ])->whereHas('customer', function ($query) use ($search) {
+            if ($search) {
+                $query->where('name', 'LIKE', '%' . $search . '%');
+            }
+        })
             ->paginate(10);
 
         return view('customers.schedules.index', compact('items'));
