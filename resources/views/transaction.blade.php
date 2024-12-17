@@ -86,7 +86,7 @@
                                                     <div class="d-flex px-2 py-1">
                                                         <div class="d-flex flex-column justify-content-center">
                                                             <p
-                                                                    class="mb-0 text-sm label-name">{{$transaction->customer->name}}</p>
+                                                                    class="mb-0 text-sm label-name">{{$transaction->customer ? $transaction->customer->name : ''}}</p>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -94,13 +94,13 @@
                                                     <p class="text-sm font-weight-bol mb-0">{{number_format($transaction->amount)}}</p>
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <span class="text-sm">{{$transaction->service->name}}</span>
+                                                    <span class="text-sm">{{$transaction->service ? $transaction->service->name : ''}}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <p class="text-sm font-weight-bol mb-0">{{$transaction->agency->name}}</p>
+                                                    <p class="text-sm font-weight-bol mb-0">{{$transaction->agency ? $transaction->agency->name : ''}}</p>
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <p class="text-sm font-weight-bol mb-0">{{$transaction->user->name}}</p>
+                                                    <p class="text-sm font-weight-bol mb-0">{{$transaction->user ? $transaction->user->name : ''}}</p>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <p class="text-sm font-weight-bol mb-0">{{ \Carbon\Carbon::parse($transaction->created_at)->format('d-m-Y') }}</p>
