@@ -14,7 +14,7 @@ class CustomerServicesController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-
+        $agencyId = auth()->user()->agency_id;
         $items = CustomerService::with([
             'customer' => function ($query) {
                 $query->withTrashed();
@@ -26,19 +26,23 @@ class CustomerServicesController extends Controller
                 $query->withTrashed();
             }
         ])
-            ->whereHas('customer', function ($query) use ($search) {
+            ->where(function ($query) use ($search, $agencyId) {
                 if ($search) {
-                    $query->where('name', 'LIKE', '%' . $search . '%');
-                }
-            })
-            ->orWhereHas('service', function ($query) use ($search) {
-                if ($search) {
-                    $query->where('name', 'LIKE', '%' . $search . '%');
+                    $query->whereHas('customer', function ($q) use ($search, $agencyId) {
+                        $q->withTrashed()
+                            ->where('name', 'LIKE', '%' . $search . '%')
+                            ->where('agency_id', $agencyId);
+                    })
+                        ->orWhereHas('service', function ($q) use ($search, $agencyId) {
+                            $q->withTrashed()
+                                ->where('name', 'LIKE', '%' . $search . '%')
+                                ->where('agency_id', $agencyId);
+                        });
                 }
             })
             ->orderBy('created_at', 'desc');
         if (!auth()->user()->is_protected) {
-            $items = $items->where('agency_id', auth()->user()->agency_id);
+            $items = $items->where('agency_id', $agencyId);
         }
         $items = $items->paginate(10);
 
