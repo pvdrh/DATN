@@ -17,7 +17,7 @@ class ServicesController extends Controller
             ::when($search, function ($query, $search) {
                 $query->where('name', 'LIKE', "%$search%");
             })->with('agency');
-        if (Auth::user()->role != 1) {
+        if (!auth()->user()->is_protected) {
             $services = $services->where('agency_id', Auth::user()->agency_id);
         }
 
