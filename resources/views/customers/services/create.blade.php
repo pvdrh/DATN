@@ -27,7 +27,8 @@
                                         class="field-required"> *</span></label>
                             <select name="service_id" id="service_id" class="form-select" required>
                                 @foreach($services as $service)
-                                    <option value="{{ $service->id }}">{{ $service->name }}</option>
+                                    <option value="{{ $service->id }}"
+                                            data-price="{{ $service->price }}">{{ $service->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -71,6 +72,17 @@
             if (value) {
                 e.target.value = new Intl.NumberFormat('vi-VN').format(value);
             }
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            const serviceSelect = document.getElementById('service_id');
+            const amountInput = document.getElementById('amount');
+
+            serviceSelect.addEventListener('change', function () {
+                const selectedOption = serviceSelect.options[serviceSelect.selectedIndex];
+                const price = selectedOption.getAttribute('data-price') || 0;
+
+                amountInput.value = parseInt(price).toLocaleString('vi-VN');
+            });
         });
     </script>
 @endsection
