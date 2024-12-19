@@ -86,7 +86,7 @@
                 <div class="card-header pb-0">
                     <div class="row" style="margin-bottom: 10px">
                         <div class="col-lg-6 col-7">
-                            <h6>Thống kê</h6>
+                            <h6>Thống kê theo chi nhánh</h6>
                         </div>
                     </div>
                 </div>
