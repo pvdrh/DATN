@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Agency;
 use App\Models\Customer;
 use App\Models\CustomerService;
 use App\Models\Service;
@@ -60,7 +61,9 @@ class CustomerServicesController extends Controller
             $customers = Customer::where('agency_id', $agency_id)->get();
         }
 
-        return view('customers.services.create', compact('services', 'customers'));
+        $agencies = Agency::all();
+
+        return view('customers.services.create', compact('services', 'customers', 'agencies'));
     }
 
     public function store(Request $request)
@@ -72,19 +75,20 @@ class CustomerServicesController extends Controller
         ]);
         $amount = $request->amount;
         $amount = (int)str_replace('.', '', $amount);
+        $agencyId = $request->agency_id ?: auth()->user()->agency_id;
         CustomerService::create([
             'customer_id' => $request->customer_id,
             'service_id' => $request->service_id,
             'user_id' => auth()->id(),
             'end_time' => $request->end_time,
-            'agency_id' => auth()->user()->agency_id,
+            'agency_id' => $agencyId
         ]);
 
         Transaction::create([
             'customer_id' => $request->customer_id,
             'service_id' => $request->service_id,
             'user_id' => auth()->id(),
-            'agency_id' => auth()->user()->agency_id,
+            'agency_id' => $agencyId,
             'amount' => $amount,
             'created_at' => now(),
         ]);

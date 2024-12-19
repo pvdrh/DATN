@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Agency;
 use App\Models\Customer;
 use App\Models\CustomerSchedule;
 use App\Models\Service;
@@ -35,7 +36,9 @@ class CustomerSchedulesController extends Controller
     {
         $customers = Customer::all();
         $users = User::where('role', 3)->get();
-        return view('customers.schedules.create', compact('customers', 'users'));
+        $agencies = Agency::all();
+
+        return view('customers.schedules.create', compact('customers', 'users', 'agencies'));
     }
 
     public function store(Request $request)
@@ -44,13 +47,14 @@ class CustomerSchedulesController extends Controller
             'customer_id' => 'required|exists:customers,id',
             'user_id' => 'required|exists:users,id',
         ]);
+        $agencyId = $request->agency_id ?: auth()->user()->agency_id;
 
         CustomerSchedule::create([
             'customer_id' => $request->customer_id,
             'user_id' => $request->user_id,
             'start_time' => $request->start_time,
             'end_time' => $request->end_time,
-            'agency_id' => auth()->user()->agency_id,
+            'agency_id' => $agencyId
         ]);
 
         return redirect()->route('customer_schedules.index');

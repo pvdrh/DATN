@@ -14,20 +14,19 @@
                 <li class="nav-item dropdown d-flex align-items-center">
                     <a class="nav-link dropdown-toggle text-body font-weight-bold px-0" href="#" id="userDropdown"
                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-person"></i> <span class="d-sm-inline d-none">Tài khoản</span>
+                        <i class="bi bi-person"></i> <span class="d-sm-inline d-none">{{auth()->user()->name}}</span>
                     </a>
                     <!-- Dropdown Menu -->
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown"
                         style="min-width: 180px; margin-top: -40px !important;">
                         <li>
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                               data-bs-target="#changePasswordModal">
-                                <i class="fa fa-key me-2"></i>Đổi mật khẩu
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                                <i class="bi bi-shield-lock me-2"></i>Đổi mật khẩu
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="{{ url('/logout') }}">
-                                <i class="fa fa-sign-out-alt me-2"></i>Đăng xuất
+                                <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
                             </a>
                         </li>
                     </ul>

@@ -64,6 +64,14 @@
         <script src="{{ asset('assets/js/plugins/fullcalendar.min.js') }}"></script>
         <script src="{{ asset('assets/js/plugins/chartjs.min.js') }}"></script>
 
+        <style>
+            .main-content {
+                overflow-x: hidden;
+            }
+            * {
+                font-family: 'Nunito', sans-serif !important;
+            }
+        </style>
         @stack('rtl')
         @stack('dashboard')
         <script>

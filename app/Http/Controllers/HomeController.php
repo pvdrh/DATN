@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Agency;
 use App\Models\Customer;
 use App\Models\CustomerSchedule;
 use App\Models\Page;
+use App\Models\Service;
 use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -85,6 +88,48 @@ class HomeController extends Controller
         }
         $schedules = $next7Days->with('customer', 'user')->get();
 
+        $agencies = DB::table('agencies')
+            ->select('agencies.*')
+            ->addSelect([
+                'customers_count' => DB::table('customers')
+                    ->selectRaw('COUNT(*)')
+                    ->whereColumn('agency_id', 'agencies.id'),
+                'users_count' => DB::table('users')
+                    ->selectRaw('COUNT(*)')
+                    ->whereColumn('agency_id', 'agencies.id'),
+                'sessions_count' => DB::table('customer_services')
+                    ->join('customers', 'customer_services.customer_id', '=', 'customers.id')
+                    ->selectRaw('COUNT(*)')
+                    ->whereColumn('customers.agency_id', 'agencies.id')
+            ])
+            ->get();
+
+        $agencyStatistics = $agencies->map(function ($agency) {
+            $currentMonthRevenue = Transaction::where('agency_id', $agency->id)
+                ->whereYear('created_at', Carbon::now()->year)
+                ->whereMonth('created_at', Carbon::now()->month)
+                ->sum('amount');
+
+            $mostPopularService = Service::select('services.id', 'services.name')
+                ->join('customer_services', 'customer_services.service_id', '=', 'services.id')
+                ->where('services.agency_id', $agency->id)
+                ->groupBy('services.id', 'services.name')
+                ->orderByRaw('COUNT(customer_services.id) DESC')
+                ->limit(1)
+                ->first();
+
+            return [
+                'agency' => $agency->name,
+                'revenue' => $currentMonthRevenue,
+                'total_customers' => $agency->customers_count,
+                'total_employees' => $agency->users_count,
+                'total_sessions' => $agency->sessions_count,
+                'most_popular_service' => $mostPopularService ? $mostPopularService->name : '-',
+            ];
+        });
+
+        $sortedAgencies = $agencyStatistics->sortByDesc('revenue');
+
         return view('dashboard', [
             'totalRevenue' => $currentMonthRevenue,
             'revenueChangePercentage' => $revenueChangePercentage,
@@ -92,7 +137,8 @@ class HomeController extends Controller
             'customerChangePercentage' => $customerChangePercentage,
             'totalEmployees' => $currentMonthEmployees,
             'employeeChangePercentage' => $employeeChangePercentage,
-            'schedules' => $schedules
+            'schedules' => $schedules,
+            'agencies' => $sortedAgencies,
         ]);
     }
 

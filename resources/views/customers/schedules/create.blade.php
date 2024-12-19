@@ -31,6 +31,17 @@
                                 @endforeach
                             </select>
                         </div>
+                        @if(auth()->user()->is_protected)
+                            <div class="col-md-6 mb-3">
+                                <label for="agency_id" class="form-label">Chi nhánh <span
+                                            class="field-required"> *</span></label>
+                                <select name="agency_id" id="agency_id" class="form-select" required>
+                                    @foreach($agencies as $agency)
+                                        <option value="{{ $agency->id }}">{{ $agency->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
                         <div class="col-md-6 mb-3">
                             <label for="start_time" class="form-label">Thời gian bắt đầu</label>
                             <input type="datetime-local" name="start_time" id="start_time"
