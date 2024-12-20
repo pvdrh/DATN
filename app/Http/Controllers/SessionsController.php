@@ -48,7 +48,7 @@ class SessionsController extends Controller
 
     public function transaction(Request $request)
     {
-        $agencyId = $request->input('agency_id');
+        $agencyId = auth()->user()->is_protected ? $request->input('agency_id') : auth()->user()->agency_id;
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
 
