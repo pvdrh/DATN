@@ -26,7 +26,8 @@
                         <div class="col-md-6 mb-3">
                             <label for="phone" class="form-label">Số điện thoại <span
                                         class="field-required"> *</span></label>
-                            <input style="pointer-events: none" type="text" name="phone" value="{{ old('phone', $user->phone) }}" id="phone"
+                            <input style="pointer-events: none" type="text" name="phone"
+                                   value="{{ old('phone', $user->phone) }}" id="phone"
                                    class="form-control @error('phone') is-invalid @enderror"
                                    placeholder="Nhập số điện thoại" required>
                             @error('phone')
@@ -61,8 +62,12 @@
 
                         <div class="col-md-6 mb-3">
                             <label for="role" class="form-label">Vai trò <span class="field-required"> *</span></label>
-                            <select name="role" id="role"
-                                    class="form-select @error('role') is-invalid @enderror" required>
+                            <select name="role" id="role" @if($user->role == 1) style="pointer-events: none" @endif
+                            class="form-select @error('role') is-invalid @enderror" required>
+                                @if($user->role == 1)
+                                    <option @if(old('role', $user->role) == 1) selected @endif value="1">Quản trị viên
+                                    </option>
+                                @endif
                                 <option @if(old('role', $user->role) == 2) selected @endif value="2">Nhân viên quản lý
                                 </option>
                                 <option @if(old('role', $user->role) == 3) selected @endif value="3">Huấn luyện viên
