@@ -80,86 +80,87 @@
             </div>
         </div>
     </div>
-    <div class="row my-4">
-        <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
-            <div class="card">
-                <div class="card-header pb-0">
-                    <div class="row" style="margin-bottom: 10px">
-                        <div class="col-lg-6 col-7">
-                            <h6>Thống kê theo chi nhánh</h6>
+    @if(auth()->user()->role == 1)
+        <div class="row my-4">
+            <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
+                <div class="card">
+                    <div class="card-header pb-0">
+                        <div class="row" style="margin-bottom: 10px">
+                            <div class="col-lg-6 col-7">
+                                <h6>Thống kê theo chi nhánh</h6>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="card-body px-0 pb-2">
-                    <div class="table-responsive">
-                        <table class="table align-items-center mb-0">
-                            <thead>
-                            <tr>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Chi
-                                    nhánh
-                                </th>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                    Doanh thu
-                                </th>
-                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                    Số lượng khách hàng
-                                </th>
-                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                    Số lượng nhân viên
-                                </th>
-                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                    Số lượng dịch vụ
-                                </th>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                    Dịch vụ đăng ký nhiều nhất
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($agencies as $item)
+                    <div class="card-body px-0 pb-2">
+                        <div class="table-responsive">
+                            <table class="table align-items-center mb-0">
+                                <thead>
                                 <tr>
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">{{$item['agency']}}</h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="avatar-group mt-2">
-                                            <h6 class="mb-0 text-sm">{{number_format($item['revenue'])}} đ</h6>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="avatar-group mt-2 text-center">
-                                            <h6 class="mb-0 text-sm">{{number_format($item['total_customers'])}}</h6>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="avatar-group mt-2 text-center">
-                                            <h6 class="mb-0 text-sm">{{number_format($item['total_employees'])}}</h6>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="avatar-group mt-2 text-center">
-                                            <h6 class="mb-0 text-sm">{{number_format($item['total_sessions'])}}</h6>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="avatar-group mt-2">
-                                            <h6 class="mb-0 text-sm">{{$item['most_popular_service'] ?: '-'}}</h6>
-                                        </div>
-                                    </td>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Chi
+                                        nhánh
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Doanh thu
+                                    </th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Số lượng khách hàng
+                                    </th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Số lượng nhân viên
+                                    </th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Số lượng dịch vụ
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Dịch vụ đăng ký nhiều nhất
+                                    </th>
                                 </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                @foreach($agencies as $item)
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">{{$item['agency']}}</h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="avatar-group mt-2">
+                                                <h6 class="mb-0 text-sm">{{number_format($item['revenue'])}} đ</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="avatar-group mt-2 text-center">
+                                                <h6 class="mb-0 text-sm">{{number_format($item['total_customers'])}}</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="avatar-group mt-2 text-center">
+                                                <h6 class="mb-0 text-sm">{{number_format($item['total_employees'])}}</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="avatar-group mt-2 text-center">
+                                                <h6 class="mb-0 text-sm">{{number_format($item['total_sessions'])}}</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="avatar-group mt-2">
+                                                <h6 class="mb-0 text-sm">{{$item['most_popular_service'] ?: '-'}}</h6>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
+    @endif
     <div class="row my-4">
         <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
             <div class="card">

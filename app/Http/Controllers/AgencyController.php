@@ -19,7 +19,7 @@ class AgencyController extends Controller
             });
 
         if (Auth::user()->role != 1) {
-            $agencies = $agencies->where('agency_id', Auth::user()->agency_id);
+            $agencies = $agencies->where('id', auth()->user()->agency_id);
         }
 
         $agencies = $agencies->paginate(10);
