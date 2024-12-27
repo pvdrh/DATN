@@ -31,7 +31,6 @@ class UserController extends Controller
         return view('users.index', compact('users', 'search'));
     }
 
-
     public function create()
     {
         $agencies = Agency::all();
@@ -62,7 +61,6 @@ class UserController extends Controller
 
         return redirect()->route('users.index');
     }
-
 
     public function edit($id)
     {
