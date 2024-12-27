@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Agency;
 use App\Models\Customer;
 use App\Models\CustomerSchedule;
-use App\Models\Service;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerSchedulesController extends Controller
 {
@@ -26,8 +26,11 @@ class CustomerSchedulesController extends Controller
             if ($search) {
                 $query->where('name', 'LIKE', '%' . $search . '%');
             }
-        })
-            ->paginate(10);
+        });
+        if (Auth::user()->role != 1) {
+            $items = $items->where('agency_id', auth()->user()->agency_id);
+        }
+        $items = $items->paginate(10);
 
         return view('customers.schedules.index', compact('items'));
     }
